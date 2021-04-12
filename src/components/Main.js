@@ -1,36 +1,31 @@
-import React from 'react'
+import React from 'react';
+import api from '../utils/api';
 
-class Main extends React.Component {
-  constructor(props) {
-    super(props);
+function  Main(props) {
+const [userData, setUserData] = React.useState([]);
+api.getDatas()
+.then((res) => {
+  const data ={
+    userName: res.name,
+    userDescription : res.about,
+    userAvatar: res.avatar,
   }
+  setUserData(data);
+})
 
-  handleEditAvatarClick = () => {
-    document.querySelector('.popup__overlay_update').classList.add('popup__overlay_active')
-  };
-
-  handleEditProfileClick = () => {
-    document.querySelector('.popup__overlay_edit-popup').classList.add('popup__overlay_active')
-  };
-
-  handleAddPlaceClick = () => {
-    document.querySelector('.popup__overlay_add-popup').classList.add('popup__overlay_active');
-  };
-
-  render() {
     return(
     <main className="content">
       <section className="profile section content__profile">
         <div className="profile__content">
-          <img className="profile__avatar" alt="Аватар профиля" />
-            <button onClick={this.handleEditAvatarClick} className="profile__avatar-edit" type="button"></button>
+          <img className="profile__avatar" alt="Аватар профиля" src={userData.userAvatar} />
+            <button onClick={props.onEditAvatar} className="profile__avatar-edit" type="button"></button>
               <div className="profile__info">
-                <h1 className="profile__name">Жак-Ив-Кусто</h1>
-                <button onClick={this.handleEditProfileClick} className="profile__edit-button" type="button"></button>
-                <p className="profile__subscription">Исследователь океана</p>
+                <h1 className="profile__name">{userData.userName}</h1>
+                <button onClick={props.onEditProfile} className="profile__edit-button" type="button"></button>
+                <p className="profile__subscription">{userData.userDescription}</p>
               </div>
         </div>
-        <button onClick={this.handleAddPlaceClick} className="profile__add-button" type="button"></button>
+        <button onClick={props.onAddPlace} className="profile__add-button" type="button"></button>
       </section>
       <section className="elements section content__elements">
         <ul className="elements__items">
@@ -38,7 +33,6 @@ class Main extends React.Component {
       </section>
     </main>
   )
-}
 }
 
 export default Main;

@@ -10,6 +10,7 @@ function App(props) {
   const [isEditProfilePopupOpen, setEditPopup] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPopup] = React.useState(false);
   const [isEditAvatarPopupOpen, setAvatar] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState(false)
 
   function handleEditAvatarClick() {
     setAvatar(!isEditAvatarPopupOpen);
@@ -25,12 +26,17 @@ function App(props) {
 
   function closeAllPopups() {
     document.querySelector('.popup__overlay_active').classList.remove('popup__overlay_active');
+    setSelectedCard(!selectedCard);
+  }
+
+  function handleCardClick(card) {
+    setSelectedCard(card);
   }
 
   return (
     <div className="page">
     < Header />
-    < Main onEditAvatar={handleEditAvatarClick} onAddPlace={handleAddPlaceClick} onEditProfile={handleEditProfileClick}>
+    < Main onEditAvatar={handleEditAvatarClick} onAddPlace={handleAddPlaceClick} onEditProfile={handleEditProfileClick} onCardClick={handleCardClick}>
     </Main>
     < Footer />
     <section className="popup">
@@ -56,7 +62,7 @@ function App(props) {
       <span className="popup__input-error profileUrl-error"></span>
       <button type="submit" className="popup__submit popup__submit_update">Сохранить</button>
     </PopupWithForm>
-    <ImagePopup />
+    <ImagePopup onClose={closeAllPopups} card={selectedCard} name="image-popup" />
       </section>
     </div>
   );

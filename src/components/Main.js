@@ -1,8 +1,10 @@
 import React from 'react';
 import api from '../utils/api';
+import Card from "./Card";
 
 function  Main(props) {
 const [userData, setUserData] = React.useState([]);
+const [cards, setCards] = React.useState([]);
 api.getDatas()
 .then((res) => {
   const data ={
@@ -12,6 +14,17 @@ api.getDatas()
   }
   setUserData(data);
 })
+
+api.getCards()
+.then((res) => {
+  const data = res.map((item) => ({
+    id: item._id,
+    likes: item.likes,
+    link: item.link,
+    name: item.name
+  }))
+  setCards(data);
+  })
 
     return(
     <main className="content">
@@ -29,6 +42,8 @@ api.getDatas()
       </section>
       <section className="elements section content__elements">
         <ul className="elements__items">
+          { cards.map(( card) =>
+          <Card key={card.id} onCardClick={props.onCardClick} card={card} /> )}
         </ul>
       </section>
     </main>

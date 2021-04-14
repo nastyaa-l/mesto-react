@@ -25,12 +25,15 @@ function App(props) {
   };
 
   function closeAllPopups() {
-    document.querySelector('.popup__overlay_active').classList.remove('popup__overlay_active');
-    setSelectedCard(!selectedCard);
+    setEditPopup(false);
+    setAddPopup(false);
+    setAvatar(false);
+    setSelectedCard(false);
   }
 
   function handleCardClick(card) {
     setSelectedCard(card);
+    console.log(selectedCard)
   }
 
   return (
@@ -62,7 +65,7 @@ function App(props) {
       <span className="popup__input-error profileUrl-error"></span>
       <button type="submit" className="popup__submit popup__submit_update">Сохранить</button>
     </PopupWithForm>
-    <ImagePopup onClose={closeAllPopups} card={selectedCard} name="image-popup" />
+    <ImagePopup onClose={closeAllPopups} card={selectedCard} />
       </section>
     </div>
   );

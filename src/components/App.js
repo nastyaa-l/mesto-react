@@ -10,7 +10,7 @@ function App() {
   const [isEditProfilePopupOpen, setEditPopup] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPopup] = React.useState(false);
   const [isEditAvatarPopupOpen, setAvatar] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState(null);
 
   function handleEditAvatarClick() {
     setAvatar(true);
@@ -28,7 +28,7 @@ function App() {
     setEditPopup(false);
     setAddPopup(false);
     setAvatar(false);
-    setSelectedCard(false);
+    setSelectedCard(null);
   }
 
   function handleCardClick(card) {
@@ -46,12 +46,7 @@ function App() {
       ></Main>
       <Footer />
       <section className="popup">
-        <PopupWithForm
-          name="edit"
-          title="Редактировать профиль"
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-        >
+        <PopupWithForm name="edit" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
           <input
             type="text"
             id="popup__name"
@@ -74,19 +69,11 @@ function App() {
             required
           />
           <span className="popup__input-error popup__subscription-error"></span>
-          <button
-            type="submit"
-            className="popup__submit popup__submit_form-edit"
-          >
+          <button type="submit" className="popup__submit popup__submit_form-edit">
             Сохранить
           </button>
         </PopupWithForm>
-        <PopupWithForm
-          name="add"
-          title="Новое место"
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-        >
+        <PopupWithForm name="add" title="Новое место" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
           <input
             type="text"
             id="element-name"
@@ -107,10 +94,7 @@ function App() {
             required
           />
           <span classNamelass="popup__input-error element-link-error"></span>
-          <button
-            type="submit"
-            className="popup__submit popup__submit_form-add"
-          >
+          <button type="submit" className="popup__submit popup__submit_form-add">
             Создать
           </button>
         </PopupWithForm>
@@ -119,12 +103,7 @@ function App() {
             Да
           </button>
         </PopupWithForm>
-        <PopupWithForm
-          name="update"
-          title="Обновить аватар"
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-        >
+        <PopupWithForm name="update" title="Обновить аватар" isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
           <input
             type="url"
             id="profileUrl"
@@ -145,4 +124,5 @@ function App() {
 }
 
 export default App;
+
 

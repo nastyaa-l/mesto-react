@@ -7,15 +7,23 @@ function Main(props) {
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
-    api.getDatas().then((res) => {
+    api.getDatas()
+    .then((res) => {
       setUserData(res);
-    });
+    })
+    .catch((err) => {
+      console.log('Ошибка в получении данных с сервера', err)
+    })
   }, []);
 
   React.useEffect(() => {
-    api.getCards().then((res) => {
+    api.getCards()
+    .then((res) => {
       setCards(res);
-    });
+    })
+    .catch((err) => {
+      console.log('Ошибка в получении данных с сервера', err)
+    })
   }, []);
 
   return (

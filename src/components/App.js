@@ -46,7 +46,7 @@ function App() {
       ></Main>
       <Footer />
       <section className="popup">
-        <PopupWithForm name="edit" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
+        <PopupWithForm name="edit" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} button="Сохранить">
           <input
             type="text"
             id="popup__name"
@@ -69,11 +69,8 @@ function App() {
             required
           />
           <span className="popup__input-error popup__subscription-error"></span>
-          <button type="submit" className="popup__submit popup__submit_form-edit">
-            Сохранить
-          </button>
         </PopupWithForm>
-        <PopupWithForm name="add" title="Новое место" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
+        <PopupWithForm name="add" title="Новое место" isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} button="Создать">
           <input
             type="text"
             id="element-name"
@@ -93,17 +90,11 @@ function App() {
             placeholder="Ссылка на картинку"
             required
           />
-          <span classNamelass="popup__input-error element-link-error"></span>
-          <button type="submit" className="popup__submit popup__submit_form-add">
-            Создать
-          </button>
+          <span className="popup__input-error element-link-error"></span>
         </PopupWithForm>
-        <PopupWithForm name="confirm" title="Вы уверены?">
-          <button type="button" className="popup__submit popup__submit_confirm">
-            Да
-          </button>
+        <PopupWithForm name="confirm" title="Вы уверены?" button="Да">
         </PopupWithForm>
-        <PopupWithForm name="update" title="Обновить аватар" isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
+        <PopupWithForm name="update" title="Обновить аватар" isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} button="Сохранить">
           <input
             type="url"
             id="profileUrl"
@@ -113,9 +104,6 @@ function App() {
             required
           />
           <span className="popup__input-error profileUrl-error"></span>
-          <button type="submit" className="popup__submit popup__submit_update">
-            Сохранить
-          </button>
         </PopupWithForm>
         <ImagePopup onClose={closeAllPopups} card={selectedCard} />
       </section>

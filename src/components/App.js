@@ -5,12 +5,39 @@ import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
 import ImagePopup from "./ImagePopup";
+import api from '../utils/api';
+import { CurrentUserContext } from '../context/CurrentUserContext';
+import {CardsContext} from "../context/CardsContext";
 
 function App() {
   const [isEditProfilePopupOpen, setEditPopup] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPopup] = React.useState(false);
   const [isEditAvatarPopupOpen, setAvatar] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null);
+  const [currentUser, setCurrentUser] = React.useState({});
+  const [cards, setCards] = React.useState([])
+
+  React.useEffect(() => {
+    api.getDatas()
+    .then((res) => {
+      setCurrentUser(res)
+    })
+    .catch((err) => {
+      console.log('Ошибка в получении данных с сервера', err)
+    })
+  }, [])
+
+  React.useEffect(() => {
+    api.getCards()
+    .then((res) => {
+      setCards(res)
+    })
+    .catch((err) => {
+      console.log('Ошибка в получении данных с сервера', err)
+    })
+  }, [])
+
+
 
   function handleEditAvatarClick() {
     setAvatar(true);
@@ -37,6 +64,8 @@ function App() {
 
   return (
     <div className="page">
+      <CurrentUserContext.Provider value={currentUser}>
+        <CardsContext.Provider value={cards}>
       <Header />
       <Main
         onEditAvatar={handleEditAvatarClick}
@@ -107,10 +136,11 @@ function App() {
         </PopupWithForm>
         <ImagePopup onClose={closeAllPopups} card={selectedCard} />
       </section>
+      </CardsContext.Provider>
+      </CurrentUserContext.Provider>
     </div>
   );
 }
 
 export default App;
-
 

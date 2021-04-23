@@ -5,6 +5,7 @@
 ***Стек*** : React, JSX, API, GIT, JavaScript (ES6+), CSS3, HTML5.
 
 **Цель проекта**
+
 Перенос [проекта предыдущих спринтов](https://github.com/nastyaa-l/mesto) на React.
 
 

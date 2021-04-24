@@ -1,12 +1,52 @@
 import React from "react";
 import Card from "./Card";
-import {CurrentUserContext} from "../context/CurrentUserContext";
-import {CardsContext} from "../context/CardsContext";
+import api from "../utils/api";
+import { CurrentUserContext } from "../context/CurrentUserContext";
 
 function Main(props) {
   const user = React.useContext(CurrentUserContext);
-  const cards = React.useContext(CardsContext);
+  const [cards, setCards] = React.useState([])
 
+  React.useEffect(() => {
+    api.getCards()
+    .then((res) => {
+      setCards(res)
+    })
+    .catch((err) => {
+      console.log('Ошибка в получении данных с сервера', err)
+    })
+  }, [])
+
+ function handleCardLike(card){
+   const isLiked = card.likes.some(i => i._id === user._id);
+
+   api.changeLikeCardStatus(card._id, isLiked)
+   .then((newCard) =>
+   {
+    setCards((state) => state.map((c) => c._id === card._id ? newCard : c)
+)})
+   .catch(err => console.log('Ошибка в постановке лайка', err))
+ }
+
+  function handleCardDelete(card){
+    const isOwn = card.owner._id === user._id;
+
+    if(isOwn){
+      api.deleteDatas(card._id)
+      .then((newCard) => {
+        setCards((state) => state.filter((c) => c._id !== card._id)
+        )
+      })
+    .catch((err) => {
+      console.log('Ошибка в удалении карточки', err)
+    })
+    }
+
+    else{
+      console.log('Невозможно удалить')
+    }
+
+  }
 
   return (
     <CurrentUserContext.Provider value={user}>
@@ -26,7 +66,7 @@ function Main(props) {
       <section className="elements section content__elements">
         <ul className="elements__items">
           {cards.map((card) => (
-            <Card key={card._id} onCardClick={props.onCardClick} card={card} />
+            <Card key={card._id} onCardClick={props.onCardClick} card={card} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
           ))}
         </ul>
       </section>

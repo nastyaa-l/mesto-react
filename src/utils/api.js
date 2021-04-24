@@ -57,35 +57,32 @@ export class Api {
   }
 
   // удаление
-  deleteDatas(id, elem){
+  deleteDatas(id){
     return fetch(this._url + 'cards/' + id, {
-      method: 'DELETE',
-      headers: this._headers,
-    })
-    .then ((res) => {
-      if(res.ok){
-        elem.closest('.element').remove();
-        return res.json();
-     }
-     return Promise.reject(new Error ('Произошла ошибка со статус-кодом ' + res.status))
-    })
-  }
-
-  deleteLikes(id) {
-    return fetch(this._url + 'cards/likes/' + id, {
       method: 'DELETE',
       headers: this._headers,
     })
     .then ( this._checkResponse);
   }
 
-  // постановка лайка
-  putDatas(id){
+  // постановка и снятие лайка
+  changeLikeCardStatus(id, isLiked){
+  if(!isLiked){
     return fetch(this._url + 'cards/likes/' + id, {
       method: 'PUT',
       headers: this._headers,
     })
     .then ( this._checkResponse);
+  }
+
+  else{
+    return fetch(this._url + 'cards/likes/' + id, {
+      method: 'DELETE',
+      headers: this._headers,
+    })
+    .then ( this._checkResponse);
+  }
+
   }
 
    // обновление аватара

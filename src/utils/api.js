@@ -31,13 +31,13 @@ export class Api {
   }
 
   // обновление данных пользователя на сервере
-  patchDatas(data){
+  setUserInfo(data){
     return fetch(this._url + 'users/me', {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
-        name: data.profileName,
-        about: data.profileSub,
+        name: data.name,
+        about: data.about,
       })
     })
     .then ( this._checkResponse);

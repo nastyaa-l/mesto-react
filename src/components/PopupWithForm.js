@@ -5,7 +5,7 @@ function PopupWithForm(props) {
     <div className={`popup__overlay ${props.isOpen ? `popup__overlay_active` : ""}`}>
       <div className="popup__content popup__content_edit">
         <h2 className="popup__subscription">{props.title}</h2>
-        <form className={`popup__form popup__form_${props.name}`} name={`${props.name}`} noValidate>
+        <form className={`popup__form popup__form_${props.name}`} name={`${props.name}`} onSubmit={props.onSubmit} noValidate>
           {props.children}
           <button type="submit" className="popup__submit popup__submit_form-edit">{props.button}</button>
         </form>

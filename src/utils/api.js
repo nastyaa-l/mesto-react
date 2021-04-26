@@ -86,15 +86,15 @@ export class Api {
   }
 
    // обновление аватара
-   patchAvatar(avatar){
+   patchAvatar(data){
     return fetch(this._url + 'users/me/avatar', {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
-        avatar: avatar,
+        avatar: data.avatar,
       })
     })
-    .then ( this._checkResponse);
+    .then (this._checkResponse);
   }
 }
 

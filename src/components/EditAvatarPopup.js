@@ -3,6 +3,11 @@ import PopupWithForm from "./PopupWithForm";
 
 function EditAvatarPopup(props) {
   const avatar = React.useRef("");
+  const [formValid, setFormValid] = React.useState(false);
+
+  function handleFormValid() {
+    setFormValid(avatar.current.validity.valid);
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -10,6 +15,7 @@ function EditAvatarPopup(props) {
       avatar: avatar.current.value,
     });
     avatar.current.value = "";
+    setFormValid(false);
   }
 
   return (
@@ -19,18 +25,31 @@ function EditAvatarPopup(props) {
       isOpen={props.isOpen}
       onClose={props.onClose}
       onSubmit={handleSubmit}
+      disabled={!formValid}
+      formValid={formValid}
       button="Сохранить"
     >
       <input
         type="url"
         id="profileUrl"
-        className="popup__input popup__input_update"
+        className={
+          formValid ? "popup__input popup__input_update" : "popup__input popup__input_update popup__input_active"
+        }
         name="profileUrl"
         placeholder="Ссылка на картинку"
         ref={avatar}
+        onChange={handleFormValid}
         required
       />
-      <span className="popup__input-error profileUrl-error"></span>
+      <span
+        className={
+          formValid
+            ? "popup__input-error profileUrl-error"
+            : "popup__input-error profileUrl-error popup__input-error_active"
+        }
+      >
+        {avatar.current.validationMessage}
+      </span>
     </PopupWithForm>
   );
 }

@@ -21,8 +21,7 @@ function App() {
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
-    api
-      .getDatas()
+    api.getDatas()
       .then((res) => {
         setCurrentUser(res);
       })
@@ -32,8 +31,7 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-    api
-      .getCards()
+    api.getCards()
       .then((res) => {
         setCards(res);
       })
@@ -45,8 +43,7 @@ function App() {
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
 
-    api
-      .changeLikeCardStatus(card._id, isLiked)
+    api.changeLikeCardStatus(card._id, isLiked)
       .then((newCard) => {
         setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
       })

@@ -1,5 +1,5 @@
 import React from "react";
-import "../pages/index.css";
+import "../index.css";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -9,7 +9,7 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import api from "../utils/api";
-import { CurrentUserContext } from "../context/CurrentUserContext";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 function App() {
   const [isEditProfilePopupOpen, setEditPopup] = React.useState(false);
@@ -55,8 +55,7 @@ function App() {
     const isOwn = card.owner._id === currentUser._id;
 
     if (isOwn) {
-      api
-        .deleteDatas(card._id)
+      api.deleteDatas(card._id)
         .then((newCard) => {
           setCards((state) => state.filter((c) => c._id !== card._id));
         })

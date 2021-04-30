@@ -9,13 +9,16 @@ function EditAvatarPopup(props) {
     setFormValid(avatar.current.validity.valid);
   }
 
+  function handleClear() {
+    avatar.current.value = "";
+    setFormValid(false);
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     props.onUpdateAvatar({
       avatar: avatar.current.value,
-    });
-    avatar.current.value = "";
-    setFormValid(false);
+    }, handleClear);
   }
 
   return (
@@ -32,21 +35,14 @@ function EditAvatarPopup(props) {
       <input
         type="url"
         id="profileUrl"
-        className={
-          formValid ? "popup__input popup__input_update" : "popup__input popup__input_update popup__input_active"
-        }
+        className={`popup__input popup__input_update ${formValid ? "" : "popup__input_active"}`}
         name="profileUrl"
         placeholder="Ссылка на картинку"
         ref={avatar}
         onChange={handleFormValid}
         required
       />
-      <span
-        className={
-          formValid
-            ? "popup__input-error profileUrl-error"
-            : "popup__input-error profileUrl-error popup__input-error_active"
-        }
+      <span className={`popup__input-error profileUrl-error ${formValid ? "" : "popup__input-error_active"}`}
       >
         {avatar.current.validationMessage}
       </span>

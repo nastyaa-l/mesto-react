@@ -17,23 +17,30 @@ function AddPlacePopup(props) {
   }
 
   React.useEffect(() => {
-    if (nameValid && linkValid) {
-      setFormValid(true);
-    } else {
+    if (!nameValid || !linkValid) {
       setFormValid(false);
+    } else {
+      setFormValid(true);
     }
   }, [nameValid, linkValid]);
+
+  function handleClear() {
+    name.current.value = "";
+    link.current.value = "";
+    setFormValid(false);
+    setLinkValid(false);
+    setNameValid(false);
+  }
 
   function handleAddPlaceSubmit(e) {
     e.preventDefault();
     props.onAddPlace({
       name: name.current.value,
       link: link.current.value,
-    });
-    name.current.value = "";
-    link.current.value = "";
-    setFormValid(false);
+    }, handleClear);
+
   }
+
   return (
     <PopupWithForm
       name="add"
@@ -48,11 +55,7 @@ function AddPlacePopup(props) {
       <input
         type="text"
         id="element-name"
-        className={
-          formValid
-            ? "popup__input popup__input_element_name"
-            : "popup__input popup__input_element_name popup__input_active"
-        }
+        className={`popup__input popup__input_element_name ${nameValid ? "" : "popup__input_active"}`}
         name="element-name"
         placeholder="Название"
         minLength="2"
@@ -61,35 +64,19 @@ function AddPlacePopup(props) {
         onChange={handleNameValid}
         required
       />
-      <span
-        className={
-          formValid
-            ? "popup__input-error element-name-error"
-            : "popup__input-error element-name-error popup__input-error_active"
-        }
-      >
-        {name.current.validationMessage}
+      <span className={`popup__input-error element-name-error ${nameValid ? "" : "popup__input-error_active"}`}>{name.current.validationMessage}
       </span>
       <input
         type="url"
         id="element-link"
-        className={
-          formValid
-            ? "popup__input popup__input_element_link"
-            : "popup__input popup__input_element_link popup__input_active"
-        }
+        className={`popup__input popup__input_element_link ${linkValid ? "" : "popup__input_active"}`}
         name="element-link"
         placeholder="Ссылка на картинку"
         ref={link}
         onChange={handleLinkValid}
         required
       />
-      <span
-        className={
-          formValid
-            ? "popup__input-error element-name-error"
-            : "popup__input-error element-name-error popup__input-error_active"
-        }
+      <span className={`popup__input-error element-name-error ${linkValid ? "" : "popup__input-error_active"}`}
       >
         {link.current.validationMessage}
       </span>

@@ -9,6 +9,8 @@ function EditProfilePopup(props) {
   const [nameValid, setNameValid] = React.useState(true);
   const [descriptionValid, setDescriptionValid] = React.useState(true);
   const [formValid, setFormValid] = React.useState(true);
+  const [nameValidationMessage, setNameValidationMessage] = React.useState("");
+  const [desValidationMessage, setDesValidationMessage] = React.useState("");
 
   React.useEffect(() => {
     setName(currentUser.name);
@@ -18,18 +20,20 @@ function EditProfilePopup(props) {
   function handleName(e) {
     setName(e.target.value);
     setNameValid(e.target.validity.valid);
+    setNameValidationMessage(e.target.validationMessage)
   }
 
   function handleDescription(e) {
     setDescription(e.target.value);
     setDescriptionValid(e.target.validity.valid);
+    setDesValidationMessage(e.target.validationMessage)
   }
 
   React.useEffect(() => {
-    if (nameValid && descriptionValid) {
-      setFormValid(true);
-    } else {
+    if (!nameValid && !descriptionValid) {
       setFormValid(false);
+    } else {
+      setFormValid(true);
     }
   }, [nameValid, descriptionValid]);
 
@@ -56,9 +60,7 @@ function EditProfilePopup(props) {
       <input
         type="text"
         id="popup__name"
-        className={
-          formValid ? "popup__input popup__input_form_name" : "popup__input popup__input_form_name popup__input_active"
-        }
+        className={`popup__input popup__input_form_name ${nameValid ? "" : "popup__input_active"}`}
         name="profileName"
         minLength="2"
         maxLength="40"
@@ -67,21 +69,12 @@ function EditProfilePopup(props) {
         onChange={handleName}
         required
       />
-      <span
-        className={
-          formValid
-            ? "popup__input-error popup__name-error"
-            : "popup__input-error popup__name-error popup__input-error_active"
-        }
-      ></span>
+      <span className={`popup__input-error popup__name-error ${nameValid ? "" : "popup__input-error_active"}`}
+      >{nameValidationMessage}</span>
       <input
         type="text"
         id="popup__subscription"
-        className={
-          formValid
-            ? "popup__input popup__input_form_subscription"
-            : "popup__input popup__input_form_subscription popup__input_active"
-        }
+        className={`popup__input popup__input_form_subscription ${descriptionValid ? "" : "popup__input_active"}`}
         name="profileSub"
         minLength="2"
         maxLength="400"
@@ -90,13 +83,8 @@ function EditProfilePopup(props) {
         onChange={handleDescription}
         required
       />
-      <span
-        className={
-          formValid
-            ? "popup__input-error popup__subscription-error"
-            : "popup__input-error popup__subscription-error popup__input-error_active"
-        }
-      ></span>
+      <span className={`popup__input-error popup__subscription-error ${descriptionValid ? "" : "popup__input-error_active"}`}
+      >{desValidationMessage}</span>
     </PopupWithForm>
   );
 }

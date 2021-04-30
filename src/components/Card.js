@@ -28,8 +28,13 @@ const cardLikeButtonClassName = (
 
   return (
     <li className="element">
+      <div style={
+        { height: 282,
+          width: 282,
+      }}>
       <img className="element__picture" alt={card.name} src={card.link} onClick={handleClick} />
       <button type="button" className={cardDeleteButtonClassName} onClick={handleCardDelete}  ></button>
+      </div>
       <div className="element__name-content">
         <h2 className="element__title">{card.name}</h2>
         <div className="element__like-content">

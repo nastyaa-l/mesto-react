@@ -8,6 +8,7 @@ import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import Loader from "./Loader";
 import api from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
@@ -19,26 +20,21 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+  const [load, setLoad] = React.useState(true);
 
   React.useEffect(() => {
-    api.getDatas()
-      .then((res) => {
-        setCurrentUser(res);
-      })
-      .catch((err) => {
-        console.log("Ошибка в получении данных с сервера", err);
-      });
-  }, []);
-
-  React.useEffect(() => {
-    api.getCards()
-      .then((res) => {
-        setCards(res);
-      })
-      .catch((err) => {
-        console.log("Ошибка в получении данных с сервера", err);
-      });
-  }, []);
+    Promise.all([api.getDatas(), api.getCards()])
+    .then(([user, cards]) => {
+      setCurrentUser(user);
+      setCards(cards);
+    })
+    .then(() => {
+      setLoad(false);
+    })
+    .catch((err) => {
+      console.log("Ошибка в получении данных с сервера", err);
+    });
+  }, [])
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
@@ -99,30 +95,44 @@ function App() {
   }
 
   function handleUpdateUser(data) {
-    api.setUserInfo(data).then((res) => {
+    api.setUserInfo(data)
+    .then((res) => {
       setCurrentUser(res);
       closeAllPopups();
-    });
+    })
+    .catch((err) => console.log('Ошибка в обновлении данных пользователя', err))
   }
 
-  function handleUpdateAvatar(avatar) {
-    api.patchAvatar(avatar).then((res) => {
+  function handleUpdateAvatar(avatar, handleClear) {
+    api.patchAvatar(avatar)
+    .then((res) => {
       setCurrentUser(res);
       closeAllPopups();
-    });
+    })
+    .then(() => {
+      closeAllPopups();
+      handleClear();
+    })
+    .catch((err) => console.log('Ошибка в смене аватара пользователя', err))
   }
 
-  function handleAddPlace(data) {
-    api.postCards(data).then((newCard) => {
-      setCards([newCard, ...cards]);
-    });
-    closeAllPopups();
+  function handleAddPlace(data, handleClear) {
+    api.postCards(data)
+    .then((newCard) => {
+      setCards([newCard, ...cards])
+    })
+    .then(() => {
+      closeAllPopups();
+      handleClear();
+    })
+    .catch((err) => console.log('Ошибка в добавлении карточки пользователя', err))
   }
 
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
         <Header />
+        <Loader load={load}></Loader>
         <Main
           onEditAvatar={handleEditAvatarClick}
           onAddPlace={handleAddPlaceClick}

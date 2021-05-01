@@ -1,6 +1,6 @@
 function Loader (props){
     return (
-      <div className={props.load ? "spinner" : ""}>
+      <div className={props.isLoading ? "spinner" : ""}>
       </div>
     )}
 

@@ -30,7 +30,7 @@ function EditProfilePopup(props) {
   }
 
   React.useEffect(() => {
-    if (!nameValid && !descriptionValid) {
+    if (!nameValid || !descriptionValid) {
       setFormValid(false);
     } else {
       setFormValid(true);

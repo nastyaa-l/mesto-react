@@ -20,20 +20,21 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
-  const [load, setLoad] = React.useState(true);
+  const [load, setLoad] = React.useState(false);
 
   React.useEffect(() => {
+    setLoad(true);
     Promise.all([api.getDatas(), api.getCards()])
     .then(([user, cards]) => {
       setCurrentUser(user);
       setCards(cards);
     })
-    .then(() => {
-      setLoad(false);
-    })
     .catch((err) => {
       console.log("Ошибка в получении данных с сервера", err);
-    });
+    })
+    .finally(() => {
+      setLoad(false);
+    })
   }, [])
 
   function handleCardLike(card) {
@@ -132,7 +133,7 @@ function App() {
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
         <Header />
-        <Loader load={load}></Loader>
+        <Loader isLoading={load}></Loader>
         <Main
           onEditAvatar={handleEditAvatarClick}
           onAddPlace={handleAddPlaceClick}
